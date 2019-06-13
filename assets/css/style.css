@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+h1, h2, h3, h4, p, ol, ul {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    margin: 0;
+    padding-bottom: 6rem;
+    min-height: 100%;
+}
+
+header {
+    min-height: 6em;
+    text-align: center;
+    margin-bottom: 2em;
+}
+header h1 {
+    font-size: 2em;
+}
+header p.subtitle {
+    color: #4a4a4a;
+    border-bottom: 2px #d41818 solid;
+    padding-bottom: 8px;
+    font-size: 0.8em;
+}
+
+nav {
+    width: 100%;
+    background: #d41818;
+}
+nav ul {
+    list-style-type: none;
+    margin: 0 auto;
+    width: 60%;
+    overflow: hidden;
+}
+nav ul.admin {
+    list-style-type: none;
+    margin: 0 auto;
+    width: 60%;
+    overflow: hidden;
+}
+nav li {
+    float: left;
+}
+nav li a {
+    padding: 0.5em 0.2em;
+    color: white;
+    background: inherit;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+
+    /*
+    transition-property: background, color;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+    */
+}
+/*
+nav li a:hover {
+    background: white;
+    color: #4a4a4a;
+}
+*/
+nav li p {
+    padding: 0.5em 0.2em;
+    color: white;
+    display: inline-block;
+    text-align: center;
+    font-style: italic;
+}
+
+main {
+    display: block;
+    margin: 0 auto;
+    width: 60%;
+    height: 100%;
+}
+main .profile-pic {
+    border-radius: 10em;
+    float: right;
+}
+main ul {
+    padding-left: 2em;
+}
+main>div {
+    margin-top: 0.8em;
+}
+
+footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: #efefef;
+    text-align: center;
+}
+
+p.date {
+    font-style: italic;
+    color: grey;
+}
+
+.msg-box {
+    padding: 0.5em;
+    margin-bottom: 0.8em;
+}
+.msg-box.error {
+    background: #d41818;
+    color: white;
+}
+.msg-box.success {
+    background: #18d437;
+    color: white;
+}
+
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+
+form .form-item {
+    line-height: 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+form .form-item input:not([type="checkbox"]) {
+    flex: 1;
+    max-width: 80%;
+}
+form input[type="submit"] {
+    flex: 0;
+    width: 100%;
+}
+form .form-split {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+}
+form .form-split:nth-of-type(2) {
+    margin-left: 1em;
+}
+
+table {
+    width: 100%;
+}
+table th {
+    text-align: left;
+}
