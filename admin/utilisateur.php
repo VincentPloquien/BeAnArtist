@@ -5,14 +5,15 @@ require_once('../utils/redirect_nonadmin.php');
 require_once('../utils/database.php');
 $DB = (new Database())->getDB();
 
-$nom = $_POST["nom"];
-$prenom = $_POST["prenom"];
-$adresse = $_POST["adresse"];
-$login = $_POST["login"];
-$motDePasse = $_POST["motDePasse"];
-$estAdmin = boolval($_POST["estAdmin"]);
 
-if (isset($nom) && isset($prenom) && isset($login) && isset($motDePasse)) {
+if (isset($_POST["nom"]) && isset($_POST["prenom"]) && isset($_POST["login"]) && isset($_POST["motDePasse"])) {
+    $nom = $_POST["nom"];
+    $prenom = $_POST["prenom"];
+    $adresse = $_POST["adresse"];
+    $login = $_POST["login"];
+    $motDePasse = $_POST["motDePasse"];
+    $estAdmin = boolval($_POST["estAdmin"]);
+
     $res = $DB->query("INSERT INTO Utilisateur (nom, prenom, adresse, login, motDePasse, estAdmin)
     VALUES ('${nom}', '${prenom}', '${adresse}', '${login}', '${motDePasse}', '${estAdmin}');");
     

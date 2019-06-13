@@ -5,12 +5,12 @@ require_once('../utils/redirect_nonadmin.php');
 require_once('../utils/database.php');
 $DB = (new Database())->getDB();
 
-$description = $_POST["description"];
-$dateDebut = $_POST["dateDebut"];
-$dateFin = $_POST["dateFin"];
-$president = intval($_POST["president"]);
-
-if (isset($description) && isset($dateDebut) && isset($dateFin) && isset($president)) {
+if (isset($_POST["description"]) && isset($_POST["dateDebut"]) && isset($_POST["dateFin"]) && isset($_POST["president"])) {
+    $description = $_POST["description"];
+    $dateDebut = $_POST["dateDebut"];
+    $dateFin = $_POST["dateFin"];
+    $president = intval($_POST["president"]);
+    
     $res_concours = $DB->query("INSERT INTO Concours (description, dateDebut, dateFin, etat)
     VALUES ('${description}', '${dateDebut}', '${dateFin}', 'pas commencé');");
 

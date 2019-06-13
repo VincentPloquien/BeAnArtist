@@ -7,8 +7,9 @@ $DB = (new Database())->getDB();
 $concours = intval($_GET["id"]);
 $utilisateur = intval($_SESSION["numUtilisateur"]);
 
-if (!isset($concours) ) {
+if (!isset($_GET["id"]) ) {
     header("Location: /index.php");
+    exit();
 } else {
     $res_concours = $DB->query("SELECT numConcours, description, dateDebut, dateFin, etat FROM Concours
     WHERE numConcours = '${concours}';");
@@ -42,7 +43,7 @@ require_once('../template/header.php');
 
 <?php
     echo "<h1>Gestion du concours « ${concours['description']} »</h1>";
-    echo "<p>Vous êtes connectés en tant que : ${role}</p>";
+    echo "<p>Vous êtes connecté en tant que : ${role}</p>";
 ?>
 
 <?php
