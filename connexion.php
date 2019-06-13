@@ -1,13 +1,13 @@
 <?php
 
-session_start();
+require_once(__DIR__ . '/utils/session.php');
 
 if (isset($_SESSION["login"])) {
     header("Location: /listeConcours.php");
 }
 
-require_once('template/header.php');
-require_once('utils/database.php');
+require_once(__DIR__ . '/template/header.php');
+require_once(__DIR__ . '/utils/database.php');
 $DB = (new Database())->getDB();
 ?>
 

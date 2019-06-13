@@ -1,8 +1,7 @@
 <?php
-
-session_start();
-require_once('../utils/redirect_admin.php');
-require_once('../utils/database.php');
+require_once(__DIR__ . '/../utils/session.php');
+require_once(__DIR__ . '/../utils/redirect_admin.php');
+require_once(__DIR__ . '/../utils/database.php');
 $DB = (new Database())->getDB();
 
 $concours = intval($_GET["id"]);

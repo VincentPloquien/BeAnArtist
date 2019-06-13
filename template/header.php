@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    require_once(__DIR__ . '/../utils/session.php');
     setlocale(LC_ALL, "fr_FR.utf8");
     date_default_timezone_set('Europe/Paris');
     mb_internal_encoding("UTF-8");
