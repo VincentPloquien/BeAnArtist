@@ -1,20 +1,22 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.12deb2+deb8u5
--- http://www.phpmyadmin.net
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
 --
--- Client :  localhost
--- Généré le :  Jeu 13 Juin 2019 à 13:55
--- Version du serveur :  5.5.62-0+deb8u1
--- Version de PHP :  5.6.40-0+deb8u2
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  ven. 14 juin 2019 à 02:08
+-- Version du serveur :  5.7.26
+-- Version de PHP :  5.6.40
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de données :  `projet`
@@ -23,48 +25,54 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Concours`
+-- Structure de la table `concours`
 --
 
-CREATE TABLE IF NOT EXISTS `Concours` (
-`numConcours` int(11) NOT NULL,
+DROP TABLE IF EXISTS `concours`;
+CREATE TABLE IF NOT EXISTS `concours` (
+  `numConcours` int(11) NOT NULL AUTO_INCREMENT,
   `description` tinytext COLLATE utf8mb4_unicode_ci NOT NULL,
   `dateDebut` date DEFAULT NULL,
   `dateFin` date DEFAULT NULL,
-  `etat` enum('pas commencé','en cours','attente','évalué') COLLATE utf8mb4_unicode_ci NOT NULL
+  `etat` enum('pas commencé','en cours','attente','évalué') COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`numConcours`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Contenu de la table `Concours`
+-- Déchargement des données de la table `concours`
 --
 
-INSERT INTO `Concours` (`numConcours`, `description`, `dateDebut`, `dateFin`, `etat`) VALUES
-(1, 'l''eau l''été', '2018-06-01', '2018-08-31', 'évalué'),
+INSERT INTO `concours` (`numConcours`, `description`, `dateDebut`, `dateFin`, `etat`) VALUES
+(1, 'l\'eau l\'été', '2018-06-01', '2018-08-31', 'en cours'),
 (2, 'Le Bleu', '2019-05-20', '2019-07-04', 'en cours'),
-(3, 'nature morte', '2019-01-15', '2019-02-28', 'attente'),
-(17, 'test', '2019-06-05', '2019-06-27', 'pas commencé');
+(3, 'nature morte', '2019-01-15', '2019-02-28', 'en cours'),
+(17, 'test', '2019-06-05', '2019-06-27', 'en cours');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Dessin`
+-- Structure de la table `dessin`
 --
 
-CREATE TABLE IF NOT EXISTS `Dessin` (
-`numDessin` int(11) NOT NULL,
+DROP TABLE IF EXISTS `dessin`;
+CREATE TABLE IF NOT EXISTS `dessin` (
+  `numDessin` int(11) NOT NULL AUTO_INCREMENT,
   `utilisateur` int(11) NOT NULL,
   `concours` int(11) NOT NULL,
   `commentaire` tinytext COLLATE utf8mb4_unicode_ci NOT NULL,
   `classement` int(11) DEFAULT NULL,
   `dateRemise` date NOT NULL,
-  `leDessin` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `leDessin` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`numDessin`),
+  KEY `utilisateur` (`utilisateur`),
+  KEY `concours` (`concours`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Contenu de la table `Dessin`
+-- Déchargement des données de la table `dessin`
 --
 
-INSERT INTO `Dessin` (`numDessin`, `utilisateur`, `concours`, `commentaire`, `classement`, `dateRemise`, `leDessin`) VALUES
+INSERT INTO `dessin` (`numDessin`, `utilisateur`, `concours`, `commentaire`, `classement`, `dateRemise`, `leDessin`) VALUES
 (1, 2, 1, 'C1 - U2 - Dessin 1', 7, '2018-07-01', '<svg> DESSIN 1 </svg>'),
 (2, 2, 1, 'C1 - U2 - Dessin 2', 5, '2018-07-03', '<svg> DESSIN 2 </svg>'),
 (3, 2, 1, 'C1 - U2 - Dessin 3', 3, '2018-07-09', '<svg> DESSIN 3 </svg>'),
@@ -94,29 +102,32 @@ INSERT INTO `Dessin` (`numDessin`, `utilisateur`, `concours`, `commentaire`, `cl
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Evaluation`
+-- Structure de la table `evaluation`
 --
 
-CREATE TABLE IF NOT EXISTS `Evaluation` (
+DROP TABLE IF EXISTS `evaluation`;
+CREATE TABLE IF NOT EXISTS `evaluation` (
   `utilisateur` int(11) NOT NULL,
   `dessin` int(11) NOT NULL,
   `note` int(11) DEFAULT NULL,
   `commentaire` tinytext COLLATE utf8mb4_unicode_ci,
-  `dateEvaluation` date DEFAULT NULL
+  `dateEvaluation` date DEFAULT NULL,
+  PRIMARY KEY (`utilisateur`,`dessin`),
+  KEY `dessin` (`dessin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Contenu de la table `Evaluation`
+-- Déchargement des données de la table `evaluation`
 --
 
-INSERT INTO `Evaluation` (`utilisateur`, `dessin`, `note`, `commentaire`, `dateEvaluation`) VALUES
+INSERT INTO `evaluation` (`utilisateur`, `dessin`, `note`, `commentaire`, `dateEvaluation`) VALUES
 (5, 15, 8, 'Bof', '2019-01-30'),
 (5, 16, 15, 'Meh', '2019-01-30'),
 (5, 17, 0, 'Disqualifié', '2019-02-01'),
 (5, 19, 19, 'Mon préféré <3', '2019-02-01'),
 (5, 21, 8, 'Ca pourrait être pire...', '2019-02-02'),
-(6, 15, 4, 'C''est nul', '2019-02-01'),
-(6, 16, 16, 'Ca c''est beau !', '2019-02-04'),
+(6, 15, 4, 'C\'est nul', '2019-02-01'),
+(6, 16, 16, 'Ca c\'est beau !', '2019-02-04'),
 (6, 18, 10, NULL, '2019-02-02'),
 (7, 1, 5, 'Bof', '2018-09-10'),
 (7, 2, 10, 'Moyen', '2018-09-10'),
@@ -124,13 +135,13 @@ INSERT INTO `Evaluation` (`utilisateur`, `dessin`, `note`, `commentaire`, `dateE
 (7, 4, 14, 'Pas mal !', '2018-09-10'),
 (7, 5, 11, 'Beaucoup moins bien', '2018-09-10'),
 (7, 6, 0, 'Nul', '2018-09-10'),
-(7, 7, 15, 'J''adore (moins quelques points car hors sujet mais chut)', '2018-09-10'),
+(7, 7, 15, 'J\'adore (moins quelques points car hors sujet mais chut)', '2018-09-10'),
 (7, 8, 20, 'Du génie', '2018-09-10'),
 (8, 1, 6, 'Bof mouais', '2018-09-17'),
 (8, 2, 9, 'Moyen bof', '2018-09-17'),
 (8, 3, 11, 'Mieux', '2018-09-17'),
 (8, 4, 16, 'Du joli travail', '2018-09-17'),
-(8, 5, 10, 'Bah qu''est-ce qu''il se passe ?', '2018-09-17'),
+(8, 5, 10, 'Bah qu\'est-ce qu\'il se passe ?', '2018-09-17'),
 (8, 6, 1, 'Pas au niveau', '2018-09-17'),
 (8, 7, 3, 'Hors sujet', '2018-09-17'),
 (8, 8, 20, 'Merveilleux', '2018-09-17');
@@ -138,26 +149,30 @@ INSERT INTO `Evaluation` (`utilisateur`, `dessin`, `note`, `commentaire`, `dateE
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Participation`
+-- Structure de la table `participation`
 --
 
-CREATE TABLE IF NOT EXISTS `Participation` (
+DROP TABLE IF EXISTS `participation`;
+CREATE TABLE IF NOT EXISTS `participation` (
   `utilisateur` int(11) NOT NULL,
   `concours` int(11) NOT NULL,
-  `role` enum('président','jury','compétiteur') COLLATE utf8mb4_unicode_ci NOT NULL
+  `role` enum('président','jury','compétiteur') COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`utilisateur`,`concours`),
+  KEY `concours` (`concours`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Contenu de la table `Participation`
+-- Déchargement des données de la table `participation`
 --
 
-INSERT INTO `Participation` (`utilisateur`, `concours`, `role`) VALUES
+INSERT INTO `participation` (`utilisateur`, `concours`, `role`) VALUES
 (1, 1, 'président'),
 (1, 2, 'président'),
 (1, 3, 'président'),
 (2, 1, 'compétiteur'),
 (2, 2, 'jury'),
 (2, 3, 'compétiteur'),
+(2, 17, 'compétiteur'),
 (3, 1, 'compétiteur'),
 (3, 2, 'jury'),
 (4, 1, 'compétiteur'),
@@ -176,29 +191,33 @@ INSERT INTO `Participation` (`utilisateur`, `concours`, `role`) VALUES
 (9, 3, 'compétiteur'),
 (10, 2, 'compétiteur'),
 (10, 3, 'compétiteur'),
+(43, 2, 'compétiteur'),
 (43, 17, 'président');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Utilisateur`
+-- Structure de la table `utilisateur`
 --
 
-CREATE TABLE IF NOT EXISTS `Utilisateur` (
-`numUtilisateur` int(11) NOT NULL,
+DROP TABLE IF EXISTS `utilisateur`;
+CREATE TABLE IF NOT EXISTS `utilisateur` (
+  `numUtilisateur` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `prenom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `adresse` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `login` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `motDePasse` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `estAdmin` tinyint(1) NOT NULL DEFAULT '0'
+  `estAdmin` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`numUtilisateur`),
+  UNIQUE KEY `login` (`login`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Contenu de la table `Utilisateur`
+-- Déchargement des données de la table `utilisateur`
 --
 
-INSERT INTO `Utilisateur` (`numUtilisateur`, `nom`, `prenom`, `adresse`, `login`, `motDePasse`, `estAdmin`) VALUES
+INSERT INTO `utilisateur` (`numUtilisateur`, `nom`, `prenom`, `adresse`, `login`, `motDePasse`, `estAdmin`) VALUES
 (1, 'Ploquien', 'Vincent', NULL, 'admin', 'network', 1),
 (2, 'Test', 'Didié', NULL, 'test0', 'test', 0),
 (3, 'Test', 'Lucas', NULL, 'test1', 'test', 0),
@@ -214,82 +233,30 @@ INSERT INTO `Utilisateur` (`numUtilisateur`, `nom`, `prenom`, `adresse`, `login`
 (43, 'Prévost', 'Thomas', '', 'tomtom', 'test', 0);
 
 --
--- Index pour les tables exportées
+-- Contraintes pour les tables déchargées
 --
 
 --
--- Index pour la table `Concours`
+-- Contraintes pour la table `dessin`
 --
-ALTER TABLE `Concours`
- ADD PRIMARY KEY (`numConcours`);
+ALTER TABLE `dessin`
+  ADD CONSTRAINT `Dessin_ibfk_1` FOREIGN KEY (`utilisateur`) REFERENCES `utilisateur` (`numUtilisateur`) ON DELETE CASCADE,
+  ADD CONSTRAINT `Dessin_ibfk_2` FOREIGN KEY (`concours`) REFERENCES `concours` (`numConcours`) ON DELETE CASCADE;
 
 --
--- Index pour la table `Dessin`
+-- Contraintes pour la table `evaluation`
 --
-ALTER TABLE `Dessin`
- ADD PRIMARY KEY (`numDessin`), ADD KEY `utilisateur` (`utilisateur`), ADD KEY `concours` (`concours`);
+ALTER TABLE `evaluation`
+  ADD CONSTRAINT `Evaluation_ibfk_1` FOREIGN KEY (`utilisateur`) REFERENCES `utilisateur` (`numUtilisateur`) ON DELETE CASCADE,
+  ADD CONSTRAINT `Evaluation_ibfk_2` FOREIGN KEY (`dessin`) REFERENCES `dessin` (`numDessin`) ON DELETE CASCADE;
 
 --
--- Index pour la table `Evaluation`
+-- Contraintes pour la table `participation`
 --
-ALTER TABLE `Evaluation`
- ADD PRIMARY KEY (`utilisateur`,`dessin`), ADD KEY `dessin` (`dessin`);
-
---
--- Index pour la table `Participation`
---
-ALTER TABLE `Participation`
- ADD PRIMARY KEY (`utilisateur`,`concours`), ADD KEY `concours` (`concours`);
-
---
--- Index pour la table `Utilisateur`
---
-ALTER TABLE `Utilisateur`
- ADD PRIMARY KEY (`numUtilisateur`), ADD UNIQUE KEY `login` (`login`);
-
---
--- AUTO_INCREMENT pour les tables exportées
---
-
---
--- AUTO_INCREMENT pour la table `Concours`
---
-ALTER TABLE `Concours`
-MODIFY `numConcours` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
---
--- AUTO_INCREMENT pour la table `Dessin`
---
-ALTER TABLE `Dessin`
-MODIFY `numDessin` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
---
--- AUTO_INCREMENT pour la table `Utilisateur`
---
-ALTER TABLE `Utilisateur`
-MODIFY `numUtilisateur` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
---
--- Contraintes pour les tables exportées
---
-
---
--- Contraintes pour la table `Dessin`
---
-ALTER TABLE `Dessin`
-ADD CONSTRAINT `Dessin_ibfk_1` FOREIGN KEY (`utilisateur`) REFERENCES `Utilisateur` (`numUtilisateur`) ON DELETE CASCADE,
-ADD CONSTRAINT `Dessin_ibfk_2` FOREIGN KEY (`concours`) REFERENCES `Concours` (`numConcours`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `Evaluation`
---
-ALTER TABLE `Evaluation`
-ADD CONSTRAINT `Evaluation_ibfk_1` FOREIGN KEY (`utilisateur`) REFERENCES `Utilisateur` (`numUtilisateur`) ON DELETE CASCADE,
-ADD CONSTRAINT `Evaluation_ibfk_2` FOREIGN KEY (`dessin`) REFERENCES `Dessin` (`numDessin`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `Participation`
---
-ALTER TABLE `Participation`
-ADD CONSTRAINT `Participation_ibfk_1` FOREIGN KEY (`utilisateur`) REFERENCES `Utilisateur` (`numUtilisateur`) ON DELETE CASCADE,
-ADD CONSTRAINT `Participation_ibfk_2` FOREIGN KEY (`concours`) REFERENCES `Concours` (`numConcours`) ON DELETE CASCADE;
+ALTER TABLE `participation`
+  ADD CONSTRAINT `Participation_ibfk_1` FOREIGN KEY (`utilisateur`) REFERENCES `utilisateur` (`numUtilisateur`) ON DELETE CASCADE,
+  ADD CONSTRAINT `Participation_ibfk_2` FOREIGN KEY (`concours`) REFERENCES `concours` (`numConcours`) ON DELETE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
