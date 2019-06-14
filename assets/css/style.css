@@ -138,6 +138,16 @@ p.date {
     float: right;
 }
 
+.button {
+    text-decoration: none;
+    color: white;
+    background: #d41818;
+    padding: 1em;
+    margin: 0.4em;
+    text-align: center;
+    display: inline-block;
+}
+
 form .form-item {
     line-height: 2em;
     display: flex;
