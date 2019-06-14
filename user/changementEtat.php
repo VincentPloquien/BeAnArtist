@@ -6,12 +6,12 @@ $DB = (new Database())->getDB();
 
 $utilisateur = intval($_SESSION["numUtilisateur"]);
 
-if (!isset($_GET["id"]) || !isset($_GET["etat"])) {
+if (!isset($_POST["id"]) || !isset($_POST["etat"])) {
     header("Location: /index.php");
     exit();
 }
-$id = intval($_GET["id"]);
-$etat = $_GET["etat"];
+$id = intval($_POST["id"]);
+$etat = $_POST["etat"];
 
 $res_concours = $DB->query("SELECT numConcours, description, dateDebut, dateFin, etat FROM Concours WHERE numConcours = '${id}';");
 if (!$res_concours) {

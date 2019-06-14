@@ -52,9 +52,10 @@ require_once('../template/header.php');
         break;
         case "président":
             ?>
-            <form action="changementEtat.php" class="form">
+            <form action="changementEtat.php" method="post" class="form">
                 <h2>Configuration du concours</h2>
                 <?php echo "<input type='hidden' name='id'value='${id}'>"; ?>
+                
                 <div class="form-item">
                     <label for="etat">Nouvel état : </label>
 
@@ -71,14 +72,32 @@ require_once('../template/header.php');
                         ?>
                     </select>
                 </div>
-
-                
+                                
                 <input type="submit" value="Modifier">
             </form>
             <?php 
         break;
         case "compétiteur":
-            
+            if ($concours["etat"] === "en cours"):
+            ?>
+            <form action="ajoutDessin.php" method="post" class="form">
+                <h2>Ajout d'un dessin</h2>
+                <?php echo "<input type='hidden' name='id'value='${id}'>"; ?>
+                
+                <div class="form-item">
+                    <label for="commentaire">Commentaire : </label>
+                    <input type="text" name="commentaire">
+                </div>
+
+                <div class="form-item">
+                    <label for="dessin">Dessin : </label>
+                    <input enctype="multipart/form-data" type="file" name="dessin" accept=".svg" required>
+                </div>
+
+                <input type="submit" value="Envoyer">
+            </form>
+            <?php 
+            endif;
         break;
         default:
             //

@@ -6,12 +6,25 @@ $DB = (new Database())->getDB();
 
 $utilisateur = intval($_SESSION["numUtilisateur"]);
 
-if (!isset($_GET["id"]) || !isset($_GET["etat"])) {
+if (!isset($_POST["id"])) {
     header("Location: /index.php");
     exit();
 }
-$id = intval($_GET["id"]);
-$etat = $_GET["etat"];
+$id = intval($_POST["id"]);
+
+if (!isset($_FILES["dessin"])) {
+    var_dump($_FILES);
+    exit();
+    $_SESSION["error"] = "Aucun dessin n'a été envoyé";
+    header("Location: concours.php?id=" . $id);
+    exit();
+}
+
+$commentaire = $_POST["commentaire"];
+
+if ($_FILES["dessin"]["error"] !== UPLOAD_ERR_OK) {
+    exit("Erreur PHP : " . $_FILES["dessin"]["error"]);
+}
 
 $res_concours = $DB->query("SELECT numConcours, description, dateDebut, dateFin, etat FROM Concours WHERE numConcours = '${id}';");
 if (!$res_concours) {
@@ -20,7 +33,7 @@ if (!$res_concours) {
 
 if ($res_concours->num_rows == 0) {
     $_SESSION["error"] = "Le concours n'existe pas";
-    header("Location: concours.php");
+    header("Location: concours.php?id=" . $id);
     exit();
 }
 $concours = $res_concours->fetch_assoc();
@@ -39,15 +52,17 @@ if ($res_role->num_rows == 0) {
 }
 $res_role->free();
 
-if ($role != "président") {
+if ($role != "compétiteur") {
     $_SESSION["error"] = "Vous ne pouvez pas faire ça";
 } else {
-    $res = $DB->query("UPDATE Concours SET etat = '${etat}' WHERE ${id};");
+    $svg = htmlspecialchars(file_get_contents($_FILES["dessin"]["tmp_name"]));
+
+    $res = $DB->query("INSERT INTO Dessin (utilisateur, concours, commentaire, dateRemise, leDessin) VALUES ('${utilisateur}', '${id}', '${commentaire}', NOW(), '${svg}');");
     if (!$res) {
         exit("Erreur SQL : " . $DB->error);
     }
 
-    $_SESSION["success"] = "Le concours est maintenant : " . $etat;
+    $_SESSION["success"] = "Votre dessin est maintenant en ligne !";
 }
 
 header("Location: concours.php?id=" . $id);
